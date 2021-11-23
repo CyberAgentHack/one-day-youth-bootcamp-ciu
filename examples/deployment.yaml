@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: echoserver
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: echoserver
+  revisionHistoryLimit: 2 # デフォルトは2
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1 # 25% のようにパーセントでも指定可能
+      maxUnavailable: 0 # maxSurge と同じくパーセントで指定可能
+  template:
+    metadata:
+      labels:
+        app: echoserver
+    spec:
+      containers:
+      - image: hashicorp/http-echo:0.2.3
+        imagePullPolicy: Always
+        name: echoserver
+        command:
+        - "/http-echo"
+        args:
+        - "-listen=0.0.0.0:8080"
+        - "-text=foo"
+        ports:
+        - containerPort: 8080

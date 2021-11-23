@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: echo-rs
+  labels:
+    app: echoserver
+spec:
+  # modify replicas according to your case
+  replicas: 4
+  selector:
+    matchLabels:
+      app: echoserver
+  template:
+    metadata:
+      name: echo-pod
+      namespace: test
+      labels:
+        app: echoserver
+    spec:
+      containers:
+      - image: hashicorp/http-echo:0.2.3
+        imagePullPolicy: IfNotPresent
+        name: echoserver
+        args:
+        - "-listen=0.0.0.0:8080"
+        - "text=replicatest"
+        ports:
+        - containerPort: 8080

@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: foobar
+spec:
+  containers:
+  - image: busybox
+    imagePullPolicy: IfNotPresent
+    name: foo
+    command:
+    - sh
+    - -c
+    - "echo foo; sleep infinity"
+  - image: busybox
+    imagePullPolicy: IfNotPresent
+    name: bar
+    command:
+    - sh
+    - -c
+    - "echo bar; sleep infinity"
